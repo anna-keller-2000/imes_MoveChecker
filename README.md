@@ -32,6 +32,16 @@ pip install bleak pandas numpy matplotlib
 
 ## Nutzung
 
-1. **Scannen nach verfügbaren Bluetooth Devices (`scanner.py`):**  
+1. **Verbinden mit einem bestimmten Sensor, um UUID herauszufinden  (`scanner.py`):**  
 Diese Datei ist ein kleines Diagnose‑Tool: Sie verbindet sich mit einem einzelnen Sensor, listet alle verfügbaren BLE‑Services und Characteristics auf und testet anschließend jede Notify‑Characteristic, um herauszufinden, welche Daten der Sensor tatsächlich sendet. Damit eignet sich das Skript perfekt, um die Struktur eines Sensors zu verstehen und zu prüfen, welche UUIDs IMU‑ oder Quaternion‑Daten liefern.
+
+IMU‑Daten (20‑Byte‑Frames):  
+00000000-0000-1000-8000-00805f9b34ff  
+→ enthält ACC, GYR, MAG + Status
+
+Quaternion‑Daten (8‑Byte‑Frames):  
+00000000-0000-1000-8000-00805f9b34fc  
+→ enthält w, x, y, z (Rotation)
+
+2. 
 
