@@ -4,7 +4,6 @@ import csv
 import time
 from bleak import BleakClient
 
-# Deine Sensoren
 SENSORS = {
     "Oberarm_rechts": "00:A0:50:E0:C6:C8",
     "Oberarm_links": "00:A0:50:E0:F4:E6",
@@ -17,7 +16,7 @@ SENSORS = {
     "Unterarm_links": "00:A0:50:E0:F9:5C",
 }
 
-# Alle Notify-Characteristics der GAIA/BNO055-Sensoren
+# All notify-characteristics of GAIA/BNO055-sensors
 NOTIFY_CHARS = [
     "00000000-0000-1000-8000-00805f9b34fc",
     "00000000-0000-1000-8000-00805f9b34fa",
@@ -26,11 +25,10 @@ NOTIFY_CHARS = [
     "00000000-0000-1000-8000-00805f9b34f4",
 ]
 
-# CSV Speicher
 csv_files = {}
 
 def decode_frame(data: bytearray):
-    """Dekodiert BNO055-Frames automatisch."""
+    """Decodes BNO055-Frames automatically."""
     length = len(data)
 
     # 6 Bytes → ACC/GYR/MAG
@@ -38,12 +36,12 @@ def decode_frame(data: bytearray):
         x, y, z = struct.unpack("<hhh", data)
         return ("vec3", (x, y, z))
 
-    # 8 Bytes → Quaternion
+    # 8 Bytes → quaternion
     if length == 8:
         w, x, y, z = struct.unpack("<hhhh", data)
         return ("quat", (w/16384.0, x/16384.0, y/16384.0, z/16384.0))
 
-    # 20 Bytes → Full IMU frame (manchmal kombiniert)
+    # 20 Bytes → full IMU frame 
     if length == 20:
         vals = struct.unpack("<hhhhhhhhhh", data)
         return ("imu20", vals)
@@ -73,38 +71,38 @@ def make_handler(sensor_label):
 
 
 async def connect_sensor(label, mac):
-    print(f"Verbinde mit {label} ({mac}) ...")
+    print(f"Connect to {label} ({mac}) ...")
 
     client = BleakClient(mac, timeout=10.0)
 
     try:
         await client.connect()
         if not client.is_connected:
-            print(f"  FEHLER: {label} konnte nicht verbunden werden.")
+            print(f"  ERROR: {label} could not be connected.")
             return
 
-        print(f"  Verbunden mit {label}")
+        print(f"  Connected with {label}")
 
-        # CSV Datei öffnen
+        # open csv file
         f = open(f"{label}.csv", "w", newline="")
         writer = csv.writer(f)
         csv_files[label] = writer
         writer.writerow(["timestamp", "type", "v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9", "v10"])
 
-        # Notify abonnieren
+        # subscribe to notify
         for char in NOTIFY_CHARS:
             try:
                 await client.start_notify(char, make_handler(label))
             except Exception as e:
-                print(f"  Konnte {char} nicht abonnieren: {e}")
+                print(f"  Could not subscribe to {char}: {e}")
 
-        print(f"  {label} streamt Daten...")
+        print(f"  {label} streams data...")
 
         while True:
             await asyncio.sleep(0.1)
 
     except Exception as e:
-        print(f"  Fehler bei {label}: {e}")
+        print(f"  Error for {label}: {e}")
 
     finally:
         try:
