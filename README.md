@@ -43,7 +43,7 @@ Diese Datei ist ein kleines Diagnose‑Tool: Sie verbindet sich mit einem einzel
     00000000-0000-1000-8000-00805f9b34fc  
     → enthält w, x, y, z (Rotation)
 
-2. **Verbinden mit allen Sensoren und streamen der IMU-Daten (`save_data`):**
+2. **Verbinden mit allen Sensoren und streamen der IMU-Daten (`save_data_parallel_csv`):**
 Die Datei verbindet sich nacheinander mit den 9 Sensoren, startet anschließend für jeden Sensor zwei Datenstreams (IMU‑Rohdaten und Quaternion‑Daten) und speichert diese Live‑Daten direkt in CSV‑Dateien.
 Für jeden Sensor entstehen zwei Dateien:
     <Sensor>.csv → IMU‑Rohdaten (ACC/GYR/MAG)
