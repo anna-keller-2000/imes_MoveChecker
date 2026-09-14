@@ -48,5 +48,6 @@ Die Datei verbindet sich nacheinander mit den 9 Sensoren, startet anschließend 
 Für jeden Sensor entstehen zwei Dateien:
     <Sensor>.csv → IMU‑Rohdaten (ACC/GYR/MAG)
     <Sensor>_quat.csv → Quaternion‑Rotationen (w,x,y,z)
+
 *PROBLEM*: Mehrere Sensoren können nicht verbunden werden, weil der Windows‑Bluetooth‑Stack überlastet ist, die Sensoren zu nah beieinander liegen, manche im Busy‑State hängen und Advertising‑Pakete kollidieren. Dadurch schlagen die Verbindungsversuche für bestimmte Sensoren wiederholt fehl, und für diese Sensoren wird kein Notify‑Stream gestartet und ihre CSV‑Dateien bleiben leer.
 
