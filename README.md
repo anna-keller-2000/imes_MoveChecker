@@ -29,6 +29,7 @@ Installiere alle benötigten Pakete mit:
 ```bash
 pip install bleak pandas numpy matplotlib
 ```
+- Außerdem muss Mojoco installiert werden und eine Entwicklungsumgebung aktiviert werden. Siehe https://github.com/google-deepmind/mujoco.
 
 ## Nutzung
 
