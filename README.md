@@ -38,17 +38,17 @@ Diese Datei ist ein kleines Diagnose‑Tool: Sie verbindet sich mit einem einzel
 
     IMU‑Daten (20‑Byte‑Frames):  
     00000000-0000-1000-8000-00805f9b34ff  
-    → enthält ACC, GYR, MAG + Status
+    → enthält timestamp, QUAT (Skalierungsfaktor 16384 (16Bit-Format)), GYR, MAG
 
     Quaternion‑Daten (8‑Byte‑Frames):  
     00000000-0000-1000-8000-00805f9b34fc  
-    → enthält w, x, y, z (Rotation)
+    → enthält timestamp, w, x, y, z (Rotation)
 
 2. **Verbinden mit allen Sensoren und streamen der IMU-Daten (`save_data_parallel_csv`):**
 Die Datei verbindet sich nacheinander mit den 9 Sensoren, startet anschließend für jeden Sensor zwei Datenstreams (IMU‑Rohdaten und Quaternion‑Daten) und speichert diese Live‑Daten direkt in CSV‑Dateien.
 Für jeden Sensor entstehen zwei Dateien:
-    <Sensor>.csv → IMU‑Rohdaten (ACC/GYR/MAG)
-    <Sensor>_quat.csv → Quaternion‑Rotationen (w,x,y,z)
+    - <Sensor>.csv → IMU‑Rohdaten (QUAT/ACC/GYR)
+    - <Sensor>_quat.csv → Quaternion‑Rotationen (w,x,y,z)
 
     *PROBLEM*: Mehrere Sensoren können nicht verbunden werden, weil der Windows‑Bluetooth‑Stack überlastet ist. Dadurch schlagen die Verbindungsversuche für bestimmte                 Sensoren wiederholt fehl, und für diese Sensoren wird kein Notify‑Stream gestartet und ihre CSV‑Dateien bleiben leer.
 
